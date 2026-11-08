@@ -438,7 +438,6 @@ a { color: inherit; text-decoration: none; }
 
 @media (min-width: 1500px) {
   .hero { height: 700px; }
-  .hero-content { width: min(1190px, 82%); }
 }
 @media (max-width: 1120px) {
   .site-header { padding-inline: 5%; }
