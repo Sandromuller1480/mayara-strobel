@@ -319,7 +319,10 @@ function PublicPage({ path, data, filteredProjects, filter, setFilter, query, se
 
   return <>
     <section className="hero">
-      <Image className="hero-image" src="/media/hero/mayara-hero.jpg" alt="Mayara Strobel em um retrato editorial elegante" fill priority sizes="100vw" />
+      <picture className="hero-picture">
+        <source media="(max-width: 760px)" srcSet="/media/hero/mayara-hero-mobile.png" />
+        <Image className="hero-image" src="/media/hero/mayara-hero-desktop.png" alt="Mayara Strobel em um retrato editorial elegante" fill priority sizes="100vw" />
+      </picture>
       <div className="hero-shade" />
       <div className="hero-content">
         <span className="hero-kicker"><span /> BELEZA COM PROPÓSITO, DO SEU JEITO</span>

@@ -35,7 +35,7 @@ As alterações usam `localStorage` versionado (`mayara-strobel-demo-v1`) e fica
 ## Mídia
 
 - Logo oficial: `public/brand/logo-oficial.png`.
-- Hero e parallax oficiais: `public/media/hero` e `public/media/parallax`.
+- Hero responsivo: `public/media/hero/mayara-hero-desktop.png` (desktop) e `public/media/hero/mayara-hero-mobile.png` (mobile). A imagem de parallax fica em `public/media/parallax`.
 - Retrato editorial: `public/media/editorial`.
 - Fotos autorizadas de portfólio: `public/media/portfolio`.
 - Fotos e vídeos originais permanecem preservados na pasta externa `imagens/`.
