@@ -366,7 +366,7 @@ function PublicPage({ path, data, filteredProjects, filter, setFilter, query, se
     </section>
 
     <section className="about-section section-wrap" id="sobre">
-      <div className="about-visual"><div className="about-photo"><Image src="/media/editorial/mayara.jpg" alt="Mayara Strobel, maquiadora e educadora" fill sizes="(max-width: 760px) 90vw, 40vw" /></div><span className="about-stamp">CUIABÁ<br /><i>com amor</i></span><div className="about-vertical">MAKE UP ARTIST & EDUCADORA</div></div>
+      <div className="about-visual"><div className="about-photo"><Image src="/media/editorial/mayara-about.jpg" alt="Mayara Strobel, maquiadora e educadora" fill sizes="(max-width: 900px) 90vw, 40vw" /></div><span className="about-stamp">CUIABÁ<br /><i>com amor</i></span><div className="about-vertical">MAKE UP ARTIST & EDUCADORA</div></div>
       <div className="about-copy"><span className="eyebrow">POR TRÁS DO PINCEL</span><h2>Oi, eu sou a<br /><i>Mayara.</i></h2><p className="about-lead">Acredito que maquiagem vai muito além do espelho. Ela é sobre se reconhecer, se expressar e ocupar o seu lugar no mundo.</p><p>Há anos transformo histórias com pincéis e compartilho o que aprendi com mulheres que, como eu, acreditam que a beleza começa de dentro pra fora.</p><div className="about-signature">Mayara Strobel <span>com carinho, sempre</span></div><Button className="btn-outline" onClick={() => setModal({ kind: "article", id: "Uma conversa sobre beleza e identidade" })}>Conheça minha história <ArrowRight size={15} /></Button></div>
     </section>
 
