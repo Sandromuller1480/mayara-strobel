@@ -1,0 +1,18 @@
+{
+  "name": "Mayara Strobel Make Up",
+  "short_name": "Mayara Make Up",
+  "description": "Aprenda, celebre e descubra seu próximo capítulo.",
+  "lang": "pt-BR",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf8f5",
+  "theme_color": "#44332d",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
