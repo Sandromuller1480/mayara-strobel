@@ -75,7 +75,7 @@ a { color: inherit; text-decoration: none; }
 .about-section { display: grid; grid-template-columns: .95fr 1.05fr; gap: 105px; align-items: center; padding-top: 118px; padding-bottom: 118px; }
 .about-visual { position: relative; width: 100%; max-width: 418px; height: 480px; }
 .about-photo { position: absolute; inset: 0 36px 0 0; overflow: hidden; background: #e4d7cc; }
-.about-photo img { object-fit: cover; object-position: center 30%; }
+.about-photo img { object-fit: cover; object-position: 50% 24%; transform: scale(1.075); transform-origin: 50% 18%; }
 .about-visual::before { content: ""; position: absolute; width: 70%; height: 76%; bottom: -18px; right: 0; border: 1px solid #c99f83; }
 .about-stamp { position: absolute; right: 4px; top: 50px; width: 83px; height: 83px; border-radius: 50%; background: #f7f0e7; color: #735b4c; display: grid; place-content: center; text-align: center; font-size: 8px; line-height: 1.5; letter-spacing: .13em; box-shadow: 0 5px 25px #49372b20; }
 .about-stamp i { font: italic 15px var(--serif); letter-spacing: 0; }
