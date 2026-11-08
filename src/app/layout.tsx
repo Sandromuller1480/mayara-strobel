@@ -13,8 +13,8 @@ export const metadata: Metadata = {
     title: "Mayara Make Up",
   },
   icons: {
-    icon: "/icon.svg",
-    apple: "/icon.svg",
+    icon: [{ url: "/brand/icon-app.png", type: "image/png", sizes: "560x560" }],
+    apple: [{ url: "/brand/icon-app.png", type: "image/png", sizes: "560x560" }],
   },
 };
 

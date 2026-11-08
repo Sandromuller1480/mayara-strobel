@@ -1,9 +1,9 @@
-const CACHE_NAME = "mayara-make-up-v2";
+const CACHE_NAME = "mayara-make-up-v3";
 const OFFLINE_URL = "/offline.html";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll([OFFLINE_URL, "/manifest.webmanifest", "/icon.svg"])),
+    caches.open(CACHE_NAME).then((cache) => cache.addAll([OFFLINE_URL, "/manifest.webmanifest", "/brand/icon-app.png", "/brand/logo-menu.png"])),
   );
   self.skipWaiting();
 });

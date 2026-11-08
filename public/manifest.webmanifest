@@ -9,9 +9,9 @@
   "theme_color": "#44332d",
   "icons": [
     {
-      "src": "/icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "/brand/icon-app.png",
+      "sizes": "560x560",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ]
