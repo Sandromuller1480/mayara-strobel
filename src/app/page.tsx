@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  ArrowDown,
   ArrowRight,
   ArrowUpRight,
   Bell,
@@ -14,6 +13,7 @@ import {
   GraduationCap,
   Heart,
   LayoutDashboard,
+  Laptop,
   Menu,
   MessageCircle,
   MoreHorizontal,
@@ -24,6 +24,7 @@ import {
   ShieldCheck,
   Sparkles,
   Users,
+  ChevronRight,
   X,
 } from "lucide-react";
 import Image from "next/image";
@@ -171,6 +172,15 @@ export default function Home() {
     return () => window.clearTimeout(timer);
   }, [notice]);
 
+  useEffect(() => {
+    if (!mobileMenu) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileMenu(false);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [mobileMenu]);
+
   const update = (fn: (previous: DemoState) => DemoState) => setData((previous) => fn(previous));
   const navigate = (target: string) => {
     const url = new URL(target, window.location.origin);
@@ -246,21 +256,27 @@ export default function Home() {
 
   return (
     <>
-      <header className="site-header">
+      <header className={`site-header ${isAdmin || isApp ? "site-header-utility" : ""}`}>
         <Link className="brand" href="/" onClick={(event) => { event.preventDefault(); navigate("/"); }}>
-          <Image src="/brand/logo-oficial.png" alt="Mayara Strobel Make Up" width={166} height={73} priority />
+          <span className="brand-portrait" aria-hidden="true"><Image src="/brand/logo-oficial.png" alt="" width={1774} height={887} priority /></span>
+          <span className="brand-wordmark"><strong>MAYARA STROBEL</strong><small><span /> MAKE UP <span /></small></span>
         </Link>
-        <button className="menu-toggle" aria-label="Abrir menu" onClick={() => setMobileMenu(!mobileMenu)}>{mobileMenu ? <X /> : <Menu />}</button>
-        <nav className={`main-nav ${mobileMenu ? "nav-open" : ""}`}>
-          <Link href="/sobre" onClick={(e) => { e.preventDefault(); goTo("sobre"); }}>A Mayara</Link>
+        <nav id="main-navigation" className={`main-nav ${mobileMenu ? "nav-open" : ""}`} aria-label="Navegação principal">
           <Link href="/cursos" onClick={(e) => { e.preventDefault(); goTo("cursos"); }}>Cursos</Link>
+          <Link href="/eventos" onClick={(e) => { e.preventDefault(); setMobileMenu(false); setModal({ kind: "request" }); }}>Eventos</Link>
           <Link href="/portfolio" onClick={(e) => { e.preventDefault(); goTo("portfolio"); }}>Portfólio</Link>
-          <Link href="/blog" onClick={(e) => { e.preventDefault(); goTo("blog"); }}>Conteúdos</Link>
-          <Link href="/forum" onClick={(e) => { e.preventDefault(); navigate("/forum"); }}>Comunidade</Link>
+          <Link href="/blog" onClick={(e) => { e.preventDefault(); goTo("blog"); }}>Blog</Link>
+          <Link href="/forum" onClick={(e) => { e.preventDefault(); navigate("/forum"); }}>Fórum</Link>
+          <Link className="nav-secondary-link" href="/sobre" onClick={(e) => { e.preventDefault(); goTo("sobre"); }}>A Mayara</Link>
+          <Link className="nav-secondary-link" href="/app" onClick={(e) => { e.preventDefault(); navigate("/app"); }}>Minha área</Link>
         </nav>
         <div className="header-actions">
           <button className="icon-btn" aria-label="Pesquisar trabalhos" onClick={() => goTo("portfolio")}><Search size={18} /></button>
-          <Button className="header-cta" onClick={() => navigate("/app")}>Minha área <ArrowUpRight size={14} /></Button>
+          <button className="menu-toggle" aria-label={mobileMenu ? "Fechar menu" : "Abrir menu"} aria-expanded={mobileMenu} aria-controls="main-navigation" onClick={() => setMobileMenu(!mobileMenu)}>{mobileMenu ? <X /> : <Menu />}</button>
+          <div className={`header-menu-popover ${mobileMenu ? "is-open" : ""}`}>
+            <button onClick={() => goTo("sobre")}>A Mayara</button>
+            <button onClick={() => navigate("/app")}>Minha área <ArrowUpRight size={14} /></button>
+          </div>
         </div>
       </header>
 
@@ -320,27 +336,34 @@ function PublicPage({ path, data, filteredProjects, filter, setFilter, query, se
   return <>
     <section className="hero">
       <picture className="hero-picture">
-        <source media="(max-width: 760px)" srcSet="/media/hero/mayara-hero-mobile.png" />
+        <source media="(max-width: 900px)" srcSet="/media/hero/mayara-hero-mobile.png" />
         <Image className="hero-image" src="/media/hero/mayara-hero-desktop.png" alt="Mayara Strobel em um retrato editorial elegante" fill priority sizes="100vw" />
       </picture>
       <div className="hero-shade" />
       <div className="hero-content">
-        <span className="hero-kicker"><span /> BELEZA COM PROPÓSITO, DO SEU JEITO</span>
-        <h1>Maquiagem para<br />aprender <i>e celebrar.</i></h1>
-        <p>Conhecimento, beleza e momentos inesquecíveis.<br />Tudo começa quando você acredita no seu talento.</p>
-        <div className="hero-actions"><Button onClick={() => goTo("cursos")}>Explorar cursos <ArrowRight size={16} /></Button><button className="ghost-action" onClick={() => setModal({ kind: "request" })}>Solicitar orçamento <ArrowUpRight size={15} /></button></div>
-        <div className="hero-caption"><span className="hero-caption-line" /> MAKE UP ARTIST · CUIABÁ, MT</div>
+        <h1>Maquiagem para<br />aprender e celebrar</h1>
+        <span className="hero-rule" aria-hidden="true" />
+        <div className="hero-cards" aria-label="Principais serviços">
+          <button className="hero-card" onClick={() => goTo("cursos")}>
+            <Laptop aria-hidden="true" />
+            <strong>Cursos EAD</strong>
+            <span className="hero-card-cta">Saiba mais</span>
+            <ChevronRight className="hero-card-arrow" aria-hidden="true" />
+          </button>
+          <button className="hero-card" onClick={() => goTo("turmas")}>
+            <Users aria-hidden="true" />
+            <strong>Turmas<br className="desktop-only" /> presenciais</strong>
+            <span className="hero-card-cta">Saiba mais</span>
+            <ChevronRight className="hero-card-arrow" aria-hidden="true" />
+          </button>
+          <button className="hero-card" onClick={() => setModal({ kind: "request" })}>
+            <CalendarDays aria-hidden="true" />
+            <strong>Maquiagem<br className="desktop-only" /> para eventos</strong>
+            <span className="hero-card-cta">Saiba mais</span>
+            <ChevronRight className="hero-card-arrow" aria-hidden="true" />
+          </button>
+        </div>
       </div>
-      <button className="hero-scroll" aria-label="Rolar para descobrir" onClick={() => goTo("entradas")}><ArrowDown size={16} /></button>
-      <div className="hero-index">01 <span /> 04</div>
-    </section>
-
-    <section className="intro-strip" id="entradas"><div className="intro-overline"><span>UM LUGAR PARA</span><span>SER E SE TORNAR</span></div><p>Aprenda no seu ritmo. Viva experiências de perto.<br /><i>Se sinta você — na sua melhor versão.</i></p><span className="intro-mark">✳</span></section>
-
-    <section className="pathways section-wrap">
-      <div className="pathway-card pathway-dark"><div className="pathway-number">01 / APRENDA</div><div className="pathway-icon"><BookOpen size={19} /></div><div><h3>Seu talento,<br /><i>em movimento.</i></h3><p>Aulas que acompanham o seu ritmo, do primeiro pincel à próxima conquista.</p><button onClick={() => goTo("cursos")}>Explorar cursos <ArrowRight size={15} /></button></div><span className="pathway-watermark">01</span></div>
-      <div className="pathway-card pathway-light"><div className="pathway-number">02 / VIVA</div><div className="pathway-icon"><CalendarDays size={19} /></div><div><h3>Encontros que<br /><i>fazem acontecer.</i></h3><p>Turmas pequenas, troca verdadeira e prática com a Mayara.</p><button onClick={() => goTo("turmas")}>Ver próximas turmas <ArrowRight size={15} /></button></div><span className="pathway-watermark">02</span></div>
-      <div className="pathway-card pathway-rose"><div className="pathway-number">03 / CELEBRE</div><div className="pathway-icon"><Sparkles size={19} /></div><div><h3>O seu dia merece<br /><i>ser inesquecível.</i></h3><p>Uma beleza que é sua, para os momentos que ficam para sempre.</p><button onClick={() => setModal({ kind: "request" })}>Vamos conversar <ArrowRight size={15} /></button></div><span className="pathway-watermark">03</span></div>
     </section>
 
     <section className="about-section section-wrap" id="sobre">
