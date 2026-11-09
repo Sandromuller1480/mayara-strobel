@@ -279,7 +279,7 @@ export default function Home() {
         </div>
       </header>
 
-      <main>
+      <main className={isAdmin || isApp || path === "/forum" ? "main-with-fixed-header" : ""}>
         {isAdmin ? <AdminPage data={data} update={update} notify={notify} resetDemo={resetDemo} /> :
           isApp ? <StudentPage data={data} update={update} navigate={navigate} notify={notify} applyInstall={applyInstall} /> :
             <PublicPage
