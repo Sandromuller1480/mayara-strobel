@@ -29,7 +29,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { FormEvent, startTransition, useEffect, useMemo, useState } from "react";
+import { FormEvent, startTransition, useEffect, useMemo, useRef, useState } from "react";
 
 type Request = { name: string; event: string; date: string; city: string; people: string; status: string };
 type DemoState = {
@@ -328,12 +328,48 @@ function PublicPage({ path, data, filteredProjects, filter, setFilter, query, se
   bookClass: (classItem: (typeof classes)[number]) => void; notify: (message: string) => void;
   setData: React.Dispatch<React.SetStateAction<DemoState>>;
 }) {
+  const heroRef = useRef<HTMLElement>(null);
+  const parallaxZoneRef = useRef<HTMLDivElement>(null);
+  const closingRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const hero = heroRef.current;
+    const zone = parallaxZoneRef.current;
+    const closing = closingRef.current;
+    if (!hero || !zone || !closing) return;
+
+    let animationFrame = 0;
+    const updateParallax = () => {
+      animationFrame = 0;
+      const scrollTop = window.scrollY;
+      const heroTop = hero.getBoundingClientRect().top + scrollTop;
+      const closingTop = closing.getBoundingClientRect().top + scrollTop;
+      const start = heroTop + hero.offsetHeight * 0.1;
+      const end = Math.max(start + 1, closingTop + closing.offsetHeight * 0.35 - window.innerHeight * 0.5);
+      const progress = Math.min(1, Math.max(0, (scrollTop - start) / (end - start)));
+      const shift = window.innerHeight * (0.78 - progress * 0.43);
+      zone.style.setProperty("--parallax-shift", `${shift.toFixed(2)}px`);
+    };
+    const requestUpdate = () => {
+      if (!animationFrame) animationFrame = window.requestAnimationFrame(updateParallax);
+    };
+
+    updateParallax();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+    return () => {
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+      if (animationFrame) window.cancelAnimationFrame(animationFrame);
+    };
+  }, [path]);
+
   if (path === "/forum") {
     return <ForumPage data={data} setData={setData} notify={notify} />;
   }
 
   return <>
-    <section className="hero">
+    <section className="hero" ref={heroRef}>
       <picture className="hero-picture">
         <source media="(max-width: 900px)" srcSet="/media/hero/mayara-hero-mobile.png" />
         <Image className="hero-image" src="/media/hero/mayara-hero-desktop.png" alt="Mayara Strobel em um retrato editorial elegante" fill priority sizes="100vw" />
@@ -365,7 +401,8 @@ function PublicPage({ path, data, filteredProjects, filter, setFilter, query, se
       </div>
     </section>
 
-    <div className="parallax-zone">
+    <div className="parallax-zone" ref={parallaxZoneRef}>
+    <div className="parallax-backdrop" aria-hidden="true" />
     <section className="about-section section-wrap" id="sobre">
       <div className="about-visual"><div className="about-photo"><Image src="/media/editorial/mayara-about.jpg" alt="Mayara Strobel, maquiadora e educadora" fill sizes="(max-width: 900px) 90vw, 40vw" /></div><span className="about-stamp">CUIABÁ<br /><i>com amor</i></span><div className="about-vertical">MAKE UP ARTIST & EDUCADORA</div></div>
       <div className="about-copy"><span className="eyebrow">POR TRÁS DO PINCEL</span><h2>Oi, eu sou a<br /><i>Mayara.</i></h2><p className="about-lead">Acredito que maquiagem vai muito além do espelho. Ela é sobre se reconhecer, se expressar e ocupar o seu lugar no mundo.</p><p>Há anos transformo histórias com pincéis e compartilho o que aprendi com mulheres que, como eu, acreditam que a beleza começa de dentro pra fora.</p><div className="about-signature">Mayara Strobel <span>com carinho, sempre</span></div><Button className="btn-outline" onClick={() => setModal({ kind: "article", id: "Uma conversa sobre beleza e identidade" })}>Conheça minha história <ArrowRight size={15} /></Button></div>
@@ -382,7 +419,7 @@ function PublicPage({ path, data, filteredProjects, filter, setFilter, query, se
     <section className="journal-section section-wrap" id="blog"><div className="section-title"><div><span className="eyebrow">ANOTA AÍ</span><h2>Conversas de beleza.</h2><p>Ideias, descobertas e um pouquinho de inspiração pra levar com você.</p></div><Button className="btn-outline" onClick={() => navigate("/blog")}>Ir para o blog <ArrowRight size={15} /></Button></div><div className="journal-grid">{[...articles, ...(data.published ? [draftArticle] : [])].map((article, index) => <button className="journal-card" key={article.title} onClick={() => setModal({ kind: "article", id: article.title })}><span className={`journal-image journal-image-${index + 1}`}><Image src={article.image} alt="" fill sizes="(max-width: 760px) 90vw, 30vw" /><span><ArrowUpRight size={16} /></span></span><span className="journal-category">{article.category} <span>·</span> {article.time}</span><strong>{article.title}</strong><span className="journal-read">Ler artigo <ArrowRight size={14} /></span></button>)}</div></section>
     <section className="community-section" id="comunidade"><div className="community-text"><span className="eyebrow">A GENTE CRESCE JUNTA</span><h2>Um espaço seguro<br />pra <i>perguntar.</i></h2><p>Troque ideias, tire dúvidas e comemore cada conquista com mulheres que estão na mesma jornada que você.</p><Button onClick={() => navigate("/forum")}>Conheça a comunidade <ArrowRight size={15} /></Button><span className="community-count"><Users size={15} /> 284 alunas aprendendo juntas</span></div><div className="forum-preview"><div className="forum-topline"><span>CONVERSAS RECENTES</span><span>COMUNIDADE MAYARA</span></div>    {forumTopics.slice(0, 2).map((item) => <button className="forum-topic-preview" key={item.title} onClick={() => navigate("/forum")}><span className="forum-avatar">{item.author.split(" ").map((part) => part[0]).join("")}</span><span className="forum-preview-copy"><small>{item.tag} · {item.author}</small><strong>{item.title}</strong><span><MessageCircle size={13} /> {item.replies} respostas</span></span><ArrowUpRight size={16} /></button>)}<button className="forum-see-all" onClick={() => navigate("/forum")}>Ver todas as conversas <ArrowRight size={14} /></button><div className="forum-decoration">“</div></div></section>
 
-    <section className="closing-cta"><div className="closing-flower">✳</div><span className="eyebrow">SEU PRÓXIMO CAPÍTULO</span><h2>Começa com um <i>sim.</i></h2><p>Sim para aprender. Sim para se celebrar. Sim para você.</p><Button onClick={() => goTo("cursos")}>Quero começar <ArrowRight size={15} /></Button><span className="closing-note">COM CARINHO, MAYARA</span></section>
+    <section className="closing-cta" id="comecar" ref={closingRef}><div className="closing-flower">✳</div><span className="eyebrow">SEU PRÓXIMO CAPÍTULO</span><h2>Começa com um <i>sim.</i></h2><p>Sim para aprender. Sim para se celebrar. Sim para você.</p><Button onClick={() => goTo("cursos")}>Quero começar <ArrowRight size={15} /></Button><span className="closing-note">COM CARINHO, MAYARA</span></section>
     </div>
   </>;
 }
