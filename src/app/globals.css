@@ -91,8 +91,8 @@ a { color: inherit; text-decoration: none; }
 .about-signature span { margin-left: 9px; font: 8px var(--sans); color: #928278; letter-spacing: .07em; }
 .about-copy .btn3d { margin-top: 4px; }
 
-.parallax-zone { --parallax-position: 8%; position: relative; isolation: isolate; overflow: clip; background-color: #786357; }
-.parallax-backdrop { position: sticky; top: 0; z-index: 0; width: 100%; height: 100vh; height: 100svh; margin-bottom: -100vh; margin-bottom: -100svh; background-color: #b7b8c1; background-image: url("/media/parallax/editorial.jpg"); background-repeat: no-repeat; background-size: cover; background-position: center var(--parallax-position); will-change: background-position; pointer-events: none; }
+.parallax-zone { --parallax-position: 2%; position: relative; isolation: isolate; overflow: clip; background-color: #786357; }
+.parallax-backdrop { position: sticky; top: 94px; z-index: 0; width: 100%; height: calc(100vh - 94px); height: calc(100svh - 94px); margin-bottom: calc(-100vh + 94px); margin-bottom: calc(-100svh + 94px); background-color: #b7b8c1; background-image: url("/media/parallax/editorial.jpg"); background-repeat: no-repeat; background-size: cover; background-position: center var(--parallax-position); will-change: background-position; pointer-events: none; }
 .parallax-zone > section { position: relative; z-index: 1; }
 .portfolio-section { padding: 94px 0 75px; background: rgba(241,237,231,.5); }
 .section-title { display: flex; justify-content: space-between; align-items: end; gap: 25px; margin-bottom: 34px; }
@@ -496,7 +496,7 @@ a { color: inherit; text-decoration: none; }
   .portfolio-overlay svg { right: 8px; bottom: 12px; width: 14px; }
   .portfolio-foot > span { max-width: 135px; font-size: 6px; }
   .portfolio-foot button { font-size: 8px; }
-  .parallax-backdrop { background-size: auto 135svh; }
+  .parallax-backdrop { top: 66px; height: calc(100svh - 66px); margin-bottom: calc(-100svh + 66px); background-size: auto 135svh; }
   .parallax { height: 290px; }
   .parallax > p { font-size: 34px; }
   .courses-section { padding-top: 70px; padding-bottom: 74px; }
