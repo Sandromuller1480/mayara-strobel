@@ -142,7 +142,7 @@ a { color: inherit; text-decoration: none; }
 .course-dot { color: #bc8271; padding: 0 3px; }
 .all-courses { display: flex; justify-content: space-between; align-items: center; margin-top: 39px; color: #8a7a6e; font-size: 8px; letter-spacing: .13em; }
 
-.classes-section { padding: 90px 0 88px; background: rgba(239,231,223,.5); -webkit-backdrop-filter: blur(50px); backdrop-filter: blur(50px); }
+.classes-section { padding: 90px 0 88px; background: rgba(239,231,223,.5); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); }
 .classes-section .section-title { margin-bottom: 34px; }
 .classes-list { border-top: 1px solid #d6c9bf; }
 .class-row { min-height: 103px; display: grid; grid-template-columns: 61px minmax(0, 1fr) 80px 165px; gap: 24px; align-items: center; border-bottom: 1px solid #d6c9bf; }
