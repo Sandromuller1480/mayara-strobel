@@ -1,4 +1,4 @@
-const CACHE_NAME = "mayara-make-up-v3";
+const CACHE_NAME = "mayara-make-up-v4";
 const OFFLINE_URL = "/offline.html";
 
 self.addEventListener("install", (event) => {
@@ -23,6 +23,19 @@ self.addEventListener("fetch", (event) => {
   if (event.request.mode === "navigate") {
     event.respondWith(
       fetch(event.request).catch(async () => (await caches.match(OFFLINE_URL))),
+    );
+    return;
+  }
+
+  if (["script", "style", "worker"].includes(event.request.destination)) {
+    event.respondWith(
+      fetch(event.request).then((response) => {
+        if (response.ok && response.type === "basic") {
+          const copy = response.clone();
+          void caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        }
+        return response;
+      }).catch(async () => (await caches.match(event.request)) || Response.error()),
     );
     return;
   }

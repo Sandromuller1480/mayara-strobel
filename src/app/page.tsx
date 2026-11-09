@@ -347,8 +347,8 @@ function PublicPage({ path, data, filteredProjects, filter, setFilter, query, se
       const start = heroTop + hero.offsetHeight * 0.1;
       const end = Math.max(start + 1, closingTop + closing.offsetHeight * 0.35 - window.innerHeight * 0.5);
       const progress = Math.min(1, Math.max(0, (scrollTop - start) / (end - start)));
-      const shift = window.innerHeight * (0.78 - progress * 0.43);
-      zone.style.setProperty("--parallax-shift", `${shift.toFixed(2)}px`);
+      const backgroundPosition = 8 + progress * 72;
+      zone.style.setProperty("--parallax-position", `${backgroundPosition.toFixed(2)}%`);
     };
     const requestUpdate = () => {
       if (!animationFrame) animationFrame = window.requestAnimationFrame(updateParallax);
